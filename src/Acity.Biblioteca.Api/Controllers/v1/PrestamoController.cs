@@ -28,7 +28,6 @@ namespace Acity.Biblioteca.Api.Controllers.v1
         ///
         /// Validaciones:
         /// - Valida si libro existe (IdLibroCopia)
-        /// - Valida si libro esta disponible (IdLibroCopia)
         /// - Valida si hay stock disponible
         /// 
         /// Reglas de negocio:
@@ -43,7 +42,7 @@ namespace Acity.Biblioteca.Api.Controllers.v1
         /// 
         /// </remarks>
         /// <returns>listado de departamentos</returns>
-        [HttpPost("register")]
+        [HttpPost("registrar")]
         public async Task<IActionResult> Register([FromBody] RegistroPrestamoModel model,
             [FromServices] IRegistroPrestamoCommand RegistroPrestamoCommand,
             [FromServices] IValidator<RegistroPrestamoModel> validator)

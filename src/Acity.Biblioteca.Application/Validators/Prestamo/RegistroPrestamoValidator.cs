@@ -9,11 +9,11 @@ namespace Acity.Biblioteca.Application.Validators.Prestamo
         public RegistroPrestamoValidator() 
         {
 
-            RuleFor(x => x.IdTipo)
-                .NotNull().WithMessage("El campo no puede ser nulo.")
-                .NotEmpty();
+            //RuleFor(x => x.IdTipo)
+            //    .NotNull().WithMessage("El campo no puede ser nulo.")
+            //    .NotEmpty();
 
-            RuleFor(x => x.IdLibroCopia)
+            RuleFor(x => x.IdLibro)
                 .NotNull().WithMessage("El campo no puede ser nulo.")
                 .NotEmpty();
 

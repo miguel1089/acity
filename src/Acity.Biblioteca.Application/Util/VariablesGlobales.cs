@@ -2,6 +2,12 @@
 {
     public class VariablesGlobales
     {
+        public enum TablaTipoSolicitud
+        {
+            ALQUILER = 1,
+            PRESTAMO = 2,
+            VENTA = 3
+        }
         public enum TablaEstadoLibro
         {
             DISPONIBLE = 1,

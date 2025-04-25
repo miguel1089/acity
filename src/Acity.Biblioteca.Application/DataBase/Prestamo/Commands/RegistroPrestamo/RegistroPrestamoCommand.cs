@@ -17,40 +17,38 @@ namespace Acity.Biblioteca.Application.DataBase.Prestamo.Commands.RegistroPresta
         }
         public async Task<long> Execute(RegistroPrestamoModel model)
         {
-            //validamos si existe el libro
-            var librosCopia = await _dataBaseService.LibroCopia.ToListAsync();
-            var libroCopia = librosCopia.Find(x => x.IdLibroCopia == model.IdLibroCopia);
-            if (libroCopia == null)
-            {
-                throw new ArgumentException("El libro no existe.", nameof(model.IdLibroCopia));
-            }
-
-            //Validamos disponibilidad del libro
-            if (libroCopia.Estado == (int)VariablesGlobales.TablaEstadoLibro.NO_DISPONIBLE)
-            {
-                throw new ArgumentException("El libro no esta disponible.", nameof(model.IdLibroCopia));
-            }
-
             //validamos si hay stock
             var libros = await _dataBaseService.Libro.ToListAsync();
-            var libro = libros.Find(x => x.IdLibro == libroCopia.IdLibro);
+            var libro = libros.Find(x => x.IdLibro == model.IdLibro);
             if (libro != null)
             {
-                if(libro.Stock == 0)
+                if (libro.Stock == 0)
                 {
                     throw new ArgumentException("No hay stock disponible.");
                 }
             }
+            else
+            {
+                throw new ArgumentException("El libro no existe.", nameof(model.IdLibro));
+            }
+
+            //obtenemos una copia disponible
+            var librosCopia = await _dataBaseService.LibroCopia.ToListAsync();
+            var copiaDisponible = librosCopia.Find(x => x.IdLibro == model.IdLibro && x.Estado == (int)VariablesGlobales.TablaEstadoLibro.DISPONIBLE);
 
             //Registramos Solicitud de préstamo
             var entity = _mapper.Map<SolicitudEntity>(model);
+            entity.IdLibroCopia = copiaDisponible!.IdLibroCopia;
             entity.IdEstado = (int)VariablesGlobales.TablaEstadoSolicitud.PENDIENTE;
+            entity.IdTipo = (int)VariablesGlobales.TablaTipoSolicitud.PRESTAMO;
+            entity.FechaCreacion = DateTime.Now;
+            entity.Activo = true;
             await _dataBaseService.Solicitud.AddAsync(entity);
             await _dataBaseService.SaveAsync();
 
             //Actualizamos estado de libroCopia
-            libroCopia.Estado = (int)VariablesGlobales.TablaEstadoLibro.NO_DISPONIBLE;
-            _dataBaseService.LibroCopia.Update(libroCopia);
+            copiaDisponible.Estado = (int)VariablesGlobales.TablaEstadoLibro.NO_DISPONIBLE;
+            _dataBaseService.LibroCopia.Update(copiaDisponible);
             await _dataBaseService.SaveAsync();
 
             //Actualizamos stock de libro
