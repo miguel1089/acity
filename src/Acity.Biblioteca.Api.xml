@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Acity.Biblioteca.Api</name>
+    </assembly>
+    <members>
+        <member name="M:Acity.Biblioteca.Api.Controllers.v1.PrestamoController.Register(Acity.Biblioteca.Application.DataBase.Prestamo.Commands.RegistroPrestamo.RegistroPrestamoModel,Acity.Biblioteca.Application.DataBase.Prestamo.Commands.RegistroPrestamo.IRegistroPrestamoCommand,FluentValidation.IValidator{Acity.Biblioteca.Application.DataBase.Prestamo.Commands.RegistroPrestamo.RegistroPrestamoModel})">
+             <summary>
+             Registra una solicitud de préstamo
+             </summary>
+             <remarks>
+             Descripción:
+             -
+             Servicio de tipo POST para registrar una solicitud de tipo préstamo.
+            
+             Validaciones:
+             - Valida si libro existe (IdLibroCopia)
+             - Valida si libro esta disponible (IdLibroCopia)
+             - Valida si hay stock disponible
+             
+             Reglas de negocio:
+             -
+             - Se necesita iniciar una sesión en el sistema, este método puede validarse desde el cliente web
+            
+              Códigos de respuesta:
+             -
+             - 200 OK : La solicitud se ha realizado correctamente.         
+             - 401 UNAUTHORIZED: La solicitud no se ha aplicado porque carece de credenciales de autenticación válidas para el recurso de destino.
+             - 500 INTERNAL SERVER ERROR: El servidor encontró una condición inesperada que le impidió cumplir con la solicitud.
+             
+             </remarks>
+             <returns>listado de departamentos</returns>
+        </member>
+    </members>
+</doc>
