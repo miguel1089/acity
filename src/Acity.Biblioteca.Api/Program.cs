@@ -13,9 +13,18 @@ builder.Services
     .AddExternal(builder.Configuration)
     .AddPersistence(builder.Configuration);
 
+
 builder.Services.AddControllers();
+builder.Services.AddCors();
 
 var app = builder.Build();
+
+app.UseCors(x => x
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .SetIsOriginAllowed(origin => true) // allow any origin
+                    .AllowCredentials()); // allow credentials
+
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
